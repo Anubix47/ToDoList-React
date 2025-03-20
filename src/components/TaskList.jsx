@@ -1,4 +1,10 @@
-const TaskList = ({ tasks, setTasks }) => {
+const TaskList = ({
+  tasks,
+  setTasks,
+  setTempId,
+  setNewTaskTitle,
+  setNewTaskDescription,
+}) => {
   //cambiar el estado de completado de la tarea 👌✅
   const handleComplete = (ts, task) => {
     const tareas = [...tasks];
@@ -7,37 +13,49 @@ const TaskList = ({ tasks, setTasks }) => {
     console.log(tasks);
   };
 
-  const handleEdit = () => {
-    //editar el contenido de la tarea
-    5;
+  //cargar los atributos de la tarea en el form para editarlos 👌✅
+  const handleEdit = (ts, task) => {
+    const tareas = [...tasks];
+    tareas.find((ts) => task.date == ts.date);
+    setNewTaskTitle(task.title);
+    setNewTaskDescription(task.description);
+    setTempId(task.date);
   };
 
-  const handleDelete = () => {
+  /*   const handleDelete = () => {
     //eliminar la tarea
-  };
+  }; */
 
   return (
-    <div className="flex justify-center order-2 border-black p-4 m-7 rounded-4xl">
-      <ul className="grid  grid-cols-3 ">
-        {tasks.map((task) => (
-          <li
-            key={task.date}
-            className="flex font-bold text-2 border-2 border-black p-6 rounded-2xl m-3  justify-between"
-          >
-            {task.nombre} {task.completed ? "✔️" : "❌"}
-            <button
-              disabled={task.completed}
-              className="bg-green-800 text-white p-2 rounded-2xl m-0.5 disabled:bg-gray-500"
-              onClick={(ts) => handleComplete(ts, task)}
+    <div className="flex justify-center order-2 border-black p-4 rounded-4xl">
+      {tasks.length === 0 ? (
+        <p className="font-bold text-xl">Empty...</p>
+      ) : (
+        <ul className="grid  grid-cols-3 gap-4">
+          {tasks.map((task) => (
+            <li
+              key={task.date}
+              className="flex font-bold text-2 border-1 p-4 border-black border-b-4  rounded-2xl justify-between flex-wrap text-wrap container"
+              onClick={(ts) => handleEdit(ts, task)}
             >
-              Done
-            </button>
-            <button className="bg-rose-800 text-white p-2 rounded-2xl m-0.5">
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
+              <div className="">
+                <p>{task.title === "" ? task.description : task.title} </p>
+                <p>{task.completed ? "✔️" : "❌"}</p>
+                <button
+                  disabled={task.completed}
+                  className="bg-green-800 text-white p-1 rounded-sm disabled:bg-gray-500 ml-0 m-0.5 font-medium"
+                  onClick={(ts) => handleComplete(ts, task)}
+                >
+                  Done
+                </button>
+                <button className="bg-rose-800 text-white p-1 ml-0 rounded-sm m-0.5 font-medium">
+                  Delete
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
